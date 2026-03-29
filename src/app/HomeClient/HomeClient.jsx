@@ -18,7 +18,7 @@ SPDX-License-Identifier: GPL-2.0-only
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { cn } from "@/lib/utils" 
 
@@ -43,6 +43,7 @@ import { getUserSelf } from '@/services/users';
 import { fetchAllGroups } from '@/services/groups';
 import routes from '@/constants/routes';
 import { isAuth } from '@/shared/authHelper';
+import { set } from 'zod';
 
 export default function HomeClient() {
   const router = useRouter();
@@ -52,8 +53,14 @@ export default function HomeClient() {
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const { username, password } = values;
+
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
@@ -121,7 +128,7 @@ export default function HomeClient() {
         </div>
 
         {/* Right: Login Form */}
-        {!isAuth() && (
+        {mounted && !isAuth() && (
           <Card className="bg-[#F6F6F6] p-6 w-full max-w-md border-0">
             <CardHeader className="p-0 pb-0">
                 <CardTitle className="text-2xl font-bold text-[#101010]">

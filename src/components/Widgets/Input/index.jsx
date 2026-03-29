@@ -51,7 +51,14 @@ if (type === "radio") {
   return (
     <RadioGroup
       value={value}
-      onValueChange={onChange}
+      onValueChange={(val) =>
+        onChange({
+          target: {
+            name,
+            value: val,
+          },
+        })
+      }
       className="space-y-2"
     >
       <div className="flex items-start gap-2">
@@ -76,7 +83,14 @@ if (type === "radio") {
           className={className}
           name={name}
           value={value}
-          onCheckedChange={onChange}
+          onCheckedChange={(checkedVal) =>
+            onChange({
+              target: {
+                name,
+                value: checkedVal,
+              },
+            })
+          }
           checked={checked}
           disabled={disabled}
           id={id}
@@ -97,14 +111,21 @@ if (type === "radio") {
           <Select
             name={name}
             value={value === null ? "" : value}
-            onValueChange={(val) => onChange(val)}
+            onValueChange={(val) =>
+              onChange({
+                target: {
+                  name,
+                  value: val,
+                },
+              })
+            }
             id={id}
           >
             <SelectTrigger className="h-8 text-sm flex items-center">
               <SelectValue placeholder="All uploads" />
             </SelectTrigger>
             <SelectContent className="max-h-48 overflow-y-auto">
-              {options.length > 0 ? (
+              {options && options.length > 0 ? (
                 options.map((option, index) => (
                   <SelectItem
                     key={option.id || index}

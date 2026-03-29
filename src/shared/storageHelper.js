@@ -57,7 +57,13 @@ export const setLocalStorage = (key, value) => {
 // Get from localstorage
 export const getLocalStorage = (key) => {
   if (typeof window !== "undefined") {
-    return JSON.parse(localStorage.getItem(key));
+    const item = localStorage.getItem(key);
+
+    try {
+      return JSON.parse(item);
+    } catch (e) {
+      return item; 
+    }
   }
   return null;
 };

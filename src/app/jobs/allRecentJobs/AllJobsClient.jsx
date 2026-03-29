@@ -85,13 +85,21 @@ const AllJobsPage = () => {
       });
   }, [jobsData]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setJobsData({
-      ...jobsData,
-      [name]: value,
-      page: 1,
-    });
+  const handleChange = (e, fieldName) => {
+    if (e?.target) {
+      const { name, value } = e.target;
+      setJobsData({
+        ...jobsData,
+        [name]: value,
+        page: 1,
+      });
+    } else { 
+      setJobsData({
+        ...jobsData,
+        [fieldName]: e,
+        page: 1,
+      });
+    }
   };
 
   const handlePageChange = (_, value) => {

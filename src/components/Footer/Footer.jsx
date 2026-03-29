@@ -21,9 +21,8 @@ import { getFossologyVersion } from "@/services/info";
 import { getSessionStorage, setSessionStorage } from "@/shared/storageHelper";
 
 const Footer = () => {
-  const [version, setVersion] = useState(
-    getSessionStorage("fossologyVersion") || null
-  );
+  const [version, setVersion] = useState(null);
+  const [mounted, setMounted] = useState(false);
 
   const fetchVersion = () => {
     return getFossologyVersion()
@@ -36,10 +35,19 @@ const Footer = () => {
   };
 
   useEffect(() => {
-    if (!version) {
+    setMounted(true);
+    
+    const stored = getSessionStorage("fossologyVersion");
+    if (stored) {
+      setVersion(stored);
+    } else {
       fetchVersion();
     }
   }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <footer className="w-full bg-neutral-300 text-gray-900 text-xs px-4 py-3">
